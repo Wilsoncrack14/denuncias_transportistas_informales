@@ -44,13 +44,14 @@
                                             class="text-primary text-decoration-none">Regístrate</a></p>
                                 </div>
 
-                                <form>
+                                <form x-data="auth">
                                     <div class="mb-20">
-                                        <label class="label fs-16 mb-2">Correo Electrónico o DNI</label>
+                                        <label class="label fs-16 mb-2">Correo Electrónico</label>
                                         <div class="form-floating">
                                             <input type="email" class="form-control" id="floatingInput1"
-                                                placeholder="Ingrese su correo electrónico *">
+                                                placeholder="Ingrese su correo electrónico *" x-model="loginForm.email">
                                             <label for="floatingInput1">Ingrese su correo electrónico *</label>
+                                            <span x-text="error.email" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="mb-20">
@@ -58,10 +59,11 @@
                                         <div class="form-group" id="password-show-hide">
                                             <div class="password-wrapper position-relative password-container">
                                                 <input type="password" class="form-control text-secondary password"
-                                                    placeholder="Ingrese su contraseña *">
+                                                    placeholder="Ingrese su contraseña *" x-model="loginForm.password">
                                                 <i style="color: #A9A9C8; font-size: 22px; right: 15px;"
                                                     class="ri-eye-off-line password-toggle-icon translate-middle-y top-50 position-absolute cursor text-secondary"
                                                     aria-hidden="true"></i>
+                                                <span x-text="error.password" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -79,26 +81,13 @@
                                     </div>
 
                                     <div class="mb-4">
+                                        <div x-text="error.non_field_errors" class="text-danger text-center mb-4" x-show="error.non_field_errors.length > 0"></div>
+                                        <div class="text-success text-center mb-4" x-text="success" x-show="success"></div>
+
                                         <button type="button" class="btn btn-primary fw-normal text-white w-100"
-                                            style="padding-top: 18px; padding-bottom: 18px;">Iniciar Sesión</button>
+                                            style="padding-top: 18px; padding-bottom: 18px;" @click="login">Iniciar Sesión</button>
                                     </div>
 
-                                    <div class="position-relative text-center z-1 mb-12">
-                                        <span class="fs-16 bg-white px-4 text-secondary card d-inline-block border-0">o inicia sesión
-                                            con</span>
-                                        <span class="d-block border-bottom border-2 position-absolute w-100 z-n1"
-                                            style="top: 13px;"></span>
-                                    </div>
-
-                                    <ul class="p-0 mb-0 list-unstyled d-flex justify-content-center" style="gap: 10px;">
-                                        <li>
-                                            <a href="https://www.google.com/" target="_blank"
-                                                class="d-inline-block rounded-circle text-decoration-none text-center text-white transition-y fs-16"
-                                                style="width: 30px; height: 30px; line-height: 30px; background-color: #e02f2f;">
-                                                <i class="ri-google-fill"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </form>
                             </div>
                         </div>
@@ -109,11 +98,7 @@
     </div>
 </body>
 
+<script type="module" src="/assets/js/actions/auth.js"></script>
 {{> scripts }}
 
-<script>
-    document.querySelector('button').addEventListener('click', function() {
-        window.location.href = '/dashboard';
-    });
-</script>
 </html>

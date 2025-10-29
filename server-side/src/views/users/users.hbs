@@ -30,10 +30,13 @@
                     </nav>
                 </div>
 
-                <div class="card bg-white rounded-10 border border-white mb-4">
+                <div class="card bg-white rounded-10 border border-white mb-4" x-data="users">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 p-20">
                         {{> search }}
-                        <a href="javascript:void(0)" class="text-primary fs-16 text-decoration-none">+ Agregar nuevo Usuario</a>
+                        <button @click="openUserModal(null)" class="bg-transparent text-primary fs-16 border-0 p-0">
+                            <i class="material-symbols-outlined fs-16 me-1">add</i>
+                            Agregar nuevo Usuario
+                        </button>
                     </div>
 
                     <div class="default-table-area mx-minus-1 table-contact-list">
@@ -50,50 +53,358 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-body">#1217</td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-shrink-0">
-                                                    <img src="/assets/images/user15.jpg" class="rounded-circle"
-                                                        style="width: 35px; height: 35px;" alt="user15">
-                                                </div>
-                                                <div class="flex-grow-1 ms-12">
-                                                    <h4 class="fw-medium fs-16 mb-0">Juan Perez</h4>
+                                    <!--
+                                    <tr x-show="loading" x-cloak>
+                                        <td colspan="6" class="text-center py-5">
+                                            <div class="loader-container">
+                                                <div class="projects-loader__spinner">
+                                                    <svg class="projects-loader__icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <circle cx="20" cy="20" r="18" stroke="#009CA8" stroke-width="4" stroke-linecap="round" stroke-dasharray="28 28" opacity="0.3"/>
+                                                        <circle cx="20" cy="20" r="18" stroke="#009CA8" stroke-width="4" stroke-linecap="round" stroke-dasharray="28 28">
+                                                            <animateTransform 
+                                                                attributeName="transform" 
+                                                                type="rotate" 
+                                                                values="0 20 20;360 20 20" 
+                                                                dur="1s" 
+                                                                repeatCount="indefinite"/>
+                                                        </circle>
+                                                    </svg>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-body"><a href="mailto:juancitoperez@gmail.com">juancitoperez@gmail.com</a>
-                                        </td>
-                                        <td class="text-body">Usuario</td>
-                                        <td class="text-body">982717281</td>
-                                        <td>
-                                            <div class="d-flex justify-content-end" style="gap: 12px;">
-                                                <button class="bg-transparent p-0 border-0" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-title="View">
-                                                    <i
-                                                        class="material-symbols-outlined fs-16 fw-normal text-primary">visibility</i>
-                                                </button>
-                                                <button class="bg-transparent p-0 border-0 hover-text-success"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Edit">
-                                                    <i
-                                                        class="material-symbols-outlined fs-16 fw-normal text-primary">edit</i>
-                                                </button>
-                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Delete">
-                                                    <i
-                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                </button>
-                                            </div>
-                                        </td>
+                                    </tr>
+                                    -->
+                                    <template x-for="user in data.results" :key="user.id" x-show="data.results.length > 0 && !loading">
+                                        <tr>
+                                            <td class="text-body" x-text="`#${user.id}`"></td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <img x-bind:src="user.avatar" class="rounded-circle"
+                                                            style="width: 35px; height: 35px;" alt="user15">
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-12">
+                                                        <h4 class="fw-medium fs-16 mb-0" x-text="user.full_name"></h4>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-body"><a
+                                                    :href="`mailto:${user.email}`" x-text="user.email"></a>
+                                            </td>
+                                            <td class="text-body" x-text="user.is_superuser ? 'Autoridad' : 'Usuario'"></td>
+                                            <td class="text-body" x-text="user.phone ? user.phone : 'No disponible'"></td>
+                                            <td>
+                                                <div class="d-flex justify-content-end" style="gap: 12px;">
+                                                    <button class="bg-transparent p-0 border-0 hover-text-success"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                                        data-bs-title="Edit"
+                                                        @click="openUserModal(user)">
+                                                        <i
+                                                            class="material-symbols-outlined fs-16 fw-normal text-primary">edit</i>
+                                                    </button>
+                                                    <button class="bg-transparent p-0 border-0 hover-text-danger"
+                                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                                        data-bs-title="Delete"
+                                                        @click="openDeleteModal(user)">
+                                                        <i
+                                                            class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                    <tr x-show="data.results.length === 0">
+                                        <td colspan="6" class="text-center text-body">No se encontraron usuarios.</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
 
                         {{> paginator }}
+                    </div>
+
+                    <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header border-0">
+                                    <h5 class="modal-title" id="deleteUserModalLabel">Confirmar Eliminación</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="text-center mb-3">
+                                        <i class="material-symbols-outlined text-danger" style="font-size: 64px;">warning</i>
+                                    </div>
+                                    <p class="text-center mb-3">
+                                        ¿Estás seguro de que deseas eliminar al usuario 
+                                        <strong x-text="userToDelete ? `${userToDelete.first_name} ${userToDelete.last_name}` : ''"></strong>?
+                                    </p>
+                                    <p class="text-center text-muted small">
+                                        Esta acción no se puede deshacer.
+                                    </p>
+                                </div>
+                                <div class="modal-footer border-0">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-danger" @click="confirmDelete" :disabled="deleting">
+                                        <span x-show="!deleting">Eliminar</span>
+                                        <span x-show="deleting">
+                                            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                                            Eliminando...
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="userModalLabel" x-text="editingUser ? 'Editar Usuario' : 'Crear Nuevo Usuario'"></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form @submit.prevent="saveUser">
+                                        <div class="row g-3">
+                                            <div class="col-12 mb-2" x-show="!editingUser">
+                                                <div class="alert alert-info border-0" style="background-color: #e0f2fe; color: #075985; border-radius: 10px; padding: 12px 16px;">
+                                                    <i class="material-symbols-outlined align-middle me-2" style="font-size: 20px;">info</i>
+                                                    <span style="font-size: 0.875rem;">Los nombres se obtendrán automáticamente desde RENIEC usando el DNI</span>
+                                                </div>
+                                            </div>
+
+                                            <div :class="editingUser ? 'col-md-6' : 'col-12'">
+                                                <label for="userDni" class="form-label">DNI <span class="text-danger">*</span></label>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="userDni" 
+                                                    x-model="userForm.dni"
+                                                    maxlength="8"
+                                                    required
+                                                    :disabled="editingUser !== null"
+                                                    placeholder="12345678"
+                                                >
+                                                <small class="text-muted" x-show="!editingUser">Ingrese los 8 dígitos del DNI</small>
+                                                <span x-text="error.dni" class="text-danger"></span>
+                                            </div>
+
+                                            <div :class="editingUser ? 'col-md-6' : 'col-12'">
+                                                <label for="userEmail" class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
+                                                <input 
+                                                    type="email" 
+                                                    class="form-control" 
+                                                    id="userEmail" 
+                                                    x-model="userForm.email"
+                                                    required
+                                                    placeholder="usuario@ejemplo.com"
+                                                >
+                                                <span x-text="error.email" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-md-6" x-show="editingUser">
+                                                <label for="userFirstName" class="form-label">Nombre <span class="text-danger">*</span></label>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="userFirstName" 
+                                                    x-model="userForm.first_name"
+                                                    :required="editingUser !== null"
+                                                    placeholder="Nombre"
+                                                >
+                                                <span x-text="error.first_name" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-md-6" x-show="editingUser">
+                                                <label for="userLastName" class="form-label">Apellido <span class="text-danger">*</span></label>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="userLastName" 
+                                                    x-model="userForm.last_name"
+                                                    :required="editingUser !== null"
+                                                    placeholder="Apellido"
+                                                >
+                                                <span x-text="error.last_name" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-md-6" x-show="editingUser">
+                                                <label for="userPhone" class="form-label">Teléfono</label>
+                                                <input 
+                                                    type="tel" 
+                                                    class="form-control" 
+                                                    id="userPhone" 
+                                                    x-model="userForm.phone"
+                                                    maxlength="15"
+                                                    placeholder="999 999 999"
+                                                >
+                                                <span x-text="error.phone" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-md-6" x-show="editingUser">
+                                                <label for="userGender" class="form-label">Género</label>
+                                                <select class="form-select" id="userGender" x-model="userForm.gender">
+                                                    <option value="">Seleccionar...</option>
+                                                    <option value="male">Masculino</option>
+                                                    <option value="female">Femenino</option>
+                                                </select>
+                                                <span x-text="error.gender" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-md-6" x-show="editingUser">
+                                                <label for="userRegion" class="form-label">Región</label>
+                                                <select class="form-select" id="userRegion" x-model="userForm.region">
+                                                    <option value="">Seleccionar...</option>
+                                                    <option value="Amazonas">Amazonas</option>
+                                                    <option value="Ancash">Ancash</option>
+                                                    <option value="Apurimac">Apurímac</option>
+                                                    <option value="Arequipa">Arequipa</option>
+                                                    <option value="Ayacucho">Ayacucho</option>
+                                                    <option value="Cajamarca">Cajamarca</option>
+                                                    <option value="Callao">Callao</option>
+                                                    <option value="Cusco">Cusco</option>
+                                                    <option value="Huancavelica">Huancavelica</option>
+                                                    <option value="Huanuco">Huánuco</option>
+                                                    <option value="Ica">Ica</option>
+                                                    <option value="Junin">Junín</option>
+                                                    <option value="La Libertad">La Libertad</option>
+                                                    <option value="Lambayeque">Lambayeque</option>
+                                                    <option value="Lima">Lima</option>
+                                                    <option value="Loreto">Loreto</option>
+                                                    <option value="Madre de Dios">Madre de Dios</option>
+                                                    <option value="Moquegua">Moquegua</option>
+                                                    <option value="Pasco">Pasco</option>
+                                                    <option value="Piura">Piura</option>
+                                                    <option value="Puno">Puno</option>
+                                                    <option value="San Martin">San Martín</option>
+                                                    <option value="Tacna">Tacna</option>
+                                                    <option value="Tumbes">Tumbes</option>
+                                                    <option value="Ucayali">Ucayali</option>
+                                                </select>
+                                                <span x-text="error.region" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-md-6" x-show="editingUser">
+                                                <label for="userDistrito" class="form-label">Distrito</label>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="userDistrito" 
+                                                    x-model="userForm.distrito"
+                                                    placeholder="Distrito"
+                                                >
+                                                <span x-text="error.distrito" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-12" x-show="editingUser">
+                                                <label for="userAddress" class="form-label">Dirección</label>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="userAddress" 
+                                                    x-model="userForm.address"
+                                                    placeholder="Av. Principal 123, Lima"
+                                                >
+                                                <span x-text="error.address" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-12 mt-4" x-show="!editingUser">
+                                                <div >
+                                                    <h6 class="mb-3" style="color: #ffffff; font-weight: 600;">
+                                                        <i class="material-symbols-outlined align-middle me-2" style="font-size: 20px; color: #0f79f3;">lock</i>
+                                                        Credenciales de Acceso
+                                                    </h6>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6" x-show="!editingUser">
+                                                <label for="userPassword" class="form-label">Contraseña <span class="text-danger">*</span></label>
+                                                <input 
+                                                    type="password" 
+                                                    class="form-control" 
+                                                    id="userPassword" 
+                                                    x-model="userForm.password"
+                                                    :required="!editingUser"
+                                                    minlength="8"
+                                                    placeholder="••••••••"
+                                                >
+                                                <small class="text-muted">Mínimo 8 caracteres</small>
+                                                <span x-text="error.password" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-md-6" x-show="!editingUser">
+                                                <label for="userPassword2" class="form-label">Confirmar Contraseña <span class="text-danger">*</span></label>
+                                                <input 
+                                                    type="password" 
+                                                    class="form-control" 
+                                                    id="userPassword2" 
+                                                    x-model="userForm.password2"
+                                                    :required="!editingUser"
+                                                    minlength="8"
+                                                    placeholder="••••••••"
+                                                >
+                                                <span x-text="error.password_confirm" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-12 mt-4" x-show="editingUser">
+                                                <div>
+                                                    <h6 class="mb-3" style="color: #ffffff; font-weight: 600;">
+                                                        <i class="material-symbols-outlined align-middle me-2" style="font-size: 20px; color: #0f79f3;">admin_panel_settings</i>
+                                                        Configuración de Usuario
+                                                    </h6>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6" x-show="editingUser">
+                                                <label for="userIsActive" class="form-label">
+                                                    <i class="material-symbols-outlined align-middle me-1" style="font-size: 18px; color: #64748b;">toggle_on</i>
+                                                    Estado
+                                                </label>
+                                                <select class="form-select" id="userIsActive" x-model="userForm.is_active">
+                                                    <option value="true">Activo</option>
+                                                    <option value="false">Inactivo</option>
+                                                </select>
+                                                <span x-text="error.is_active" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="col-md-6" x-show="editingUser">
+                                                <label for="userIsStaff" class="form-label">
+                                                    <i class="material-symbols-outlined align-middle me-1" style="font-size: 18px; color: #64748b;">security</i>
+                                                    Rol
+                                                </label>
+                                                <select class="form-select" id="userIsStaff" x-model="userForm.is_superuser">
+                                                    <option value="false">Usuario</option>
+                                                    <option value="true">Autoridad</option>
+                                                </select>
+                                                <span x-text="error.is_superuser" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <span x-text="error.non_field_errors" class="text-danger text-center"></span>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        <i class="material-symbols-outlined align-middle me-1"
+                                            style="font-size: 18px;">close</i>
+                                        Cancelar    
+                                    </button>
+                                    <button type="button" class="btn btn-primary" @click="saveUser" :disabled="saving" style="color: #fff;">
+                                        <span x-show="!saving">
+                                            <i class="material-symbols-outlined align-middle me-1"
+                                                style="font-size: 18px;" x-text="editingUser ? 'check' : 'add'"></i>
+                                            <span x-text="editingUser ? 'Actualizar' : 'Crear'"></span>
+                                        </span>
+                                        <span x-show="saving">
+                                            <span class="spinner-border spinner-border-sm me-1" role="status"
+                                                aria-hidden="true"></span>
+                                            <span x-text="editingUser ? 'Actualizando...' : 'Creando...'"></span>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,6 +413,7 @@
             {{> footer }}
         </div>
     </div>
+    <script type="module" src="/assets/js/actions/users.js"></script>
     {{> scripts }}
 </body>
 

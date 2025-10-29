@@ -1,6 +1,24 @@
-<form class="table-src-form position-relative m-0">
-    <input type="text" class="form-control w-350" placeholder="Buscar...">
-    <div class="src-btn position-absolute top-50 start-0 translate-middle-y bg-transparent p-0 border-0">
+<form class="table-src-form position-relative m-0" @submit.prevent="handleSearch">
+    <input 
+        type="text" 
+        class="form-control w-350" 
+        placeholder="Buscar..."
+        x-model="searchQuery"
+        @keyup.enter="handleSearch"
+    >
+    <button 
+        type="submit"
+        class="src-btn position-absolute top-50 start-0 translate-middle-y bg-transparent p-0 border-0"
+    >
         <span class="material-symbols-outlined">search</span>
-    </div>
+    </button>
+    <button 
+        x-show="searchQuery.length > 0"
+        type="button"
+        @click="clearSearch"
+        class="position-absolute top-50 end-0 translate-middle-y bg-transparent p-0 border-0 me-2"
+        style="z-index: 10;"
+    >
+        <span class="material-symbols-outlined text-danger">close</span>
+    </button>
 </form>

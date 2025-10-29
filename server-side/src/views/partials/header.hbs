@@ -1,4 +1,4 @@
-<header class="header-area bg-white mb-4 rounded-10 border border-white" id="header-area">
+<header class="header-area bg-white mb-4 rounded-10 border border-white" id="header-area" x-data="currentUser">
     <div class="row align-items-center">
         <div class="col-md-6">
             <div class="left-header-content">
@@ -80,21 +80,21 @@
                             <div class="d-xxl-flex align-items-center bg-transparent border-0 text-start p-0 cursor dropdown-toggle"
                                 data-bs-toggle="dropdown">
                                 <div class="flex-shrink-0 position-relative">
-                                    <img class="rounded-circle admin-img-width-for-mobile"
-                                        style="width: 40px; height: 40px;" src="/assets/images/user2.jpg" alt="admin">
+                                    <img class="rounded-circle admin-img-width-for-mobile user-avatar" 
+                                        style="width: 40px; height: 40px;" :src="avatar" alt="admin">
                                 </div>
                             </div>
 
                             <div class="dropdown-menu border-0 bg-white dropdown-menu-end">
                                 <div class="d-flex align-items-center info">
                                     <div class="flex-shrink-0">
-                                        <img class="rounded-circle admin-img-width-for-mobile"
-                                            style="width: 40px; height: 40px;" src="/assets/images/user2.jpg"
+                                        <img class="rounded-circle admin-img-width-for-mobile user-avatar"
+                                            style="width: 40px; height: 40px;" :src="avatar"
                                             alt="admin">
                                     </div>
                                     <div class="flex-grow-1 ms-10">
-                                        <h3 class="fw-medium fs-17 mb-0">Juan Perez</h3>
-                                        <span class="fs-15 fw-medium">Usuario</span>
+                                        <h3 class="fw-medium fs-17 mb-0" x-text="full_name"></h3>
+                                        <span class="fs-15 fw-medium" x-text="isSuperuser ? 'Autoridad' : 'Usuario'"></span>
                                     </div>
                                 </div>
                                 <ul class="admin-link mb-0 list-unstyled">
@@ -114,7 +114,7 @@
                                     </li>
                                     <li>
                                         <a class="dropdown-item admin-item-link d-flex align-items-center text-body"
-                                            href="#">
+                                            href="javascript:void(0)" @click="localStorage.clear(); window.location='/accounts/login'">
                                             <i class="material-symbols-outlined">logout</i>
                                             <span class="ms-2">Cerrar sesión</span>
                                         </a>

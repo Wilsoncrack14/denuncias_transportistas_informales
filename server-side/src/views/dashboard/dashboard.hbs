@@ -5,7 +5,7 @@
     {{> head }}
 </head>
 
-<body class="bg-body-bg">
+<body class="bg-body-bg" x-data="dashboard">
     {{> preloader }}
     {{> sidebar }}
     <div class="container-fluid">
@@ -18,7 +18,7 @@
                             <div class="d-flex">
                                 <div class="flex-grow-1">
                                     <h3 class="mb-10">Denuncias</h3>
-                                    <h2 class="fs-26 fw-medium mb-0 lh-1">20,705</h2>
+                                    <h2 class="fs-26 fw-medium mb-0 lh-1" x-text="data.total_incidents"></h2>
                                 </div>
                                 <div class="flex-shrink-0 ms-3">
                                     <div class="bg-warning text-white text-center rounded-circle d-block"
@@ -37,7 +37,7 @@
                             <div class="d-flex">
                                 <div class="flex-grow-1">
                                     <h3 class="mb-10">Usuarios</h3>
-                                    <h2 class="fs-26 fw-medium mb-0 lh-1">84,127</h2>
+                                    <h2 class="fs-26 fw-medium mb-0 lh-1" x-text="data.total_users"></h2>
                                 </div>
                                 <div class="flex-shrink-0 ms-3">
                                     <div class="bg-info text-white text-center rounded-circle d-block"
@@ -79,91 +79,63 @@
                                                 <th scope="col" class="fw-medium">ID</th>
                                                 <th scope="col" class="fw-medium">Usuario</th>
                                                 <th scope="col" class="fw-medium">Distrito</th>
-                                                <th scope="col" class="fw-medium">Denuncia</th>
+                                                <th scope="col" class="fw-medium">Tipo</th>
                                                 <th scope="col" class="fw-medium">Estado</th>
                                                 <th scope="col" class="fw-medium">Fecha</th>
                                                 <th scope="col" class="fw-medium">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="text-body">#1217</td>
-                                                <td>
-                                                    <a href="customers.html"
-                                                        class="d-flex align-items-center text-decoration-none">
-                                                        <div class="flex-shrink-0">
-                                                            <img src="assets/images/user1.jpg" class="rounded-circle"
-                                                                style="width: 50px; height: 50px;" alt="user1">
+                                            <template x-for="report in data.recent_incidents" :key="report.id">
+                                                <tr>
+                                                    <td class="text-body" x-text="`#${report.id}`"></td>
+                                                    <td>
+                                                        <a :href="`/dashboard/users/${report.user_id}`"
+                                                            class="d-flex align-items-center text-decoration-none">
+                                                            <div class="flex-shrink-0">
+                                                                <img src="assets/images/user1.jpg"
+                                                                    class="rounded-circle"
+                                                                    style="width: 50px; height: 50px;" alt="user1">
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-12">
+                                                                <h3 class="fw-medium hover-text mb-0 fs-16"><span
+                                                                        x-text="report.user_name"></span></h3>
+                                                            </div>
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-body" x-text="report.district"></td>
+                                                    <td class="text-body" x-text="report._type_display"></td>
+                                                    <td>
+                                                        <span
+                                                            class="bg-opacity-10 fs-15 fw-normal d-inline-block default-badge"
+                                                            :class="{
+                                                                'bg-warning text-warning': report.status === 'Pending',
+                                                                'bg-info text-info': report.status === 'In Progress',
+                                                                'bg-success text-success': report.status === 'Resolved'
+                                                            }"
+                                                            x-text="report.status === 'Pending' ? 'Pendiente' : report.status === 'Resolved' ? 'Resuelta' : 'En proceso'"></span>
+                                                    </td>
+                                                    <td class="text-body"
+                                                        x-text="new Date(report.created_at).toLocaleDateString()"></td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-end" style="gap: 12px;">
+                                                            <button class="bg-transparent p-0 border-0"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                data-bs-title="Ver">
+                                                                <i
+                                                                    class="material-symbols-outlined fs-16 fw-normal text-primary">visibility</i>
+                                                            </button>
+                                                            <button
+                                                                class="bg-transparent p-0 border-0 hover-text-danger"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                data-bs-title="Eliminar">
+                                                                <i
+                                                                    class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
+                                                            </button>
                                                         </div>
-                                                        <div class="flex-grow-1 ms-12">
-                                                            <h3 class="fw-medium hover-text mb-0 fs-16">Juan Perez</h3>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="text-body">Comas</td>
-                                                <td class="text-body">Accidente</td>
-                                                <td>
-                                                    <span
-                                                        class="text-warning bg-warning bg-opacity-10 fs-15 fw-normal d-inline-block default-badge">En
-                                                        proceso</span>
-                                                </td>
-                                                <td class="text-body">15 Nov, 2025</td>
-                                                <td>
-                                                    <div class="d-flex justify-content-end" style="gap: 12px;">
-                                                        <button class="bg-transparent p-0 border-0"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="Ver">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-primary">visibility</i>
-                                                        </button>
-                                                        <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="Eliminar">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-body">#1217</td>
-                                                <td>
-                                                    <a href="customers.html"
-                                                        class="d-flex align-items-center text-decoration-none">
-                                                        <div class="flex-shrink-0">
-                                                            <img src="assets/images/user1.jpg" class="rounded-circle"
-                                                                style="width: 50px; height: 50px;" alt="user1">
-                                                        </div>
-                                                        <div class="flex-grow-1 ms-12">
-                                                            <h3 class="fw-medium hover-text mb-0 fs-16">Juan Perez</h3>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="text-body">Comas</td>
-                                                <td class="text-body">Accidente</td>
-                                                <td>
-                                                    <span
-                                                        class="text-warning bg-warning bg-opacity-10 fs-15 fw-normal d-inline-block default-badge">En
-                                                        proceso</span>
-                                                </td>
-                                                <td class="text-body">15 Nov, 2025</td>
-                                                <td>
-                                                    <div class="d-flex justify-content-end" style="gap: 12px;">
-                                                        <button class="bg-transparent p-0 border-0"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="Ver">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-primary">visibility</i>
-                                                        </button>
-                                                        <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="Eliminar">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                </tr>
+                                            </template>
                                         </tbody>
                                     </table>
                                 </div>
@@ -173,9 +145,10 @@
                 </div>
             </div>
             <div class="flex-grow-1"></div>
-           {{> footer }}
+            {{> footer }}
         </div>
     </div>
+    <script type="module" src="/assets/js/actions/dashboard.js"></script>
     {{> scripts }}
 </body>
 
