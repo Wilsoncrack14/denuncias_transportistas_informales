@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-pn#9%^4&65&3au8a$)y2yhndb$yai67-@_x&smgz2*sq*kv9=y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -139,6 +139,7 @@ AUTH_USER_MODEL = 'users_service.User'
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'https://roadify-api.thelinuxchoice.com'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
