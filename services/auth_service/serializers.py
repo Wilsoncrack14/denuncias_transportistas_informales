@@ -65,6 +65,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         dni = validated_data['dni']
         result = validate_dni(dni)
+        print("Reniec result:", result)  # Debugging line
         
         if not result or not all(k in result for k in ['nombres', 'apellidoPaterno', 'apellidoMaterno']):
             raise serializers.ValidationError({'dni': "El DNI proporcionado no es válido."})
