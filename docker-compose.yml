@@ -4,8 +4,8 @@ services:
       context: ./services
       dockerfile: Dockerfile
     container_name: django-backend
-    volumes:
-      - ./services:/app
+    # volumes:
+    #   - ./services:/app
     ports:
       - "8000:8000"
     depends_on:
@@ -16,9 +16,9 @@ services:
       context: ./server-side
       dockerfile: Dockerfile
     container_name: node-frontend
-    volumes:
-      - ./server-side:/app
-      - /app/node_modules    
+    # volumes:
+    #   - ./server-side:/app
+    #   - /app/node_modules    
     ports:
       - "3000:3000"
     stdin_open: true

@@ -1,7 +1,9 @@
 node_modules/
 .env
 .venv
-README.md
+
 COMANDOS_TESTING.md
 PAGINACION.md
 __pycache__/
+*.sqlite3
+*.pyc
