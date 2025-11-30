@@ -1,4 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
+import requests
+import logging
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -20,6 +22,20 @@ class UserRegistrationView(APIView):
             user = serializer.save()
             token, _ = Token.objects.get_or_create(user=user)
             user_data = UserSerializer(user).data
+
+            # Send welcome email via Notification Service
+            try:
+                requests.post(
+                    "http://notification-service:8000/send-email/",
+                    json={
+                        "email": user.email,
+                        "subject": "Bienvenido a Denuncias Policiales",
+                        "message": f"Hola {user.first_name}, gracias por registrarte."
+                    },
+                    timeout=5
+                )
+            except Exception as e:
+                logging.error(f"Failed to send welcome email: {e}")
 
             return Response(
                 {

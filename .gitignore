@@ -7,3 +7,4 @@ PAGINACION.md
 __pycache__/
 *.sqlite3
 *.pyc
+postgres_data/
