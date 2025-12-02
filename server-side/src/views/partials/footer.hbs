@@ -1,3 +1,125 @@
-<footer class="footer-area bg-white text-center rounded-10 rounded-bottom-0">
-    <p class="fs-16 text-body">© <span class="text-secondary">Roadify</span> all rights reserved.</p>
+<style>
+    .footer-area {
+        background-color: #f8f9fa;
+        padding-top: 60px;
+        padding-bottom: 30px;
+        color: #6c757d;
+        margin-top: auto;
+        /* Push to bottom if flex container */
+    }
+
+    .footer-title {
+        color: #343a40;
+        font-weight: 600;
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+    }
+
+    .footer-links {
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: 10px;
+    }
+
+    .footer-links a {
+        color: #6c757d;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+        color: #0d6efd;
+    }
+
+    .social-icons a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        color: #495057;
+        margin-right: 10px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+
+    .social-icons a:hover {
+        background-color: #0d6efd;
+        color: white;
+    }
+
+    .footer-bottom {
+        border-top: 1px solid #dee2e6;
+        padding-top: 20px;
+        margin-top: 40px;
+    }
+</style>
+
+<footer class="footer-area">
+    <div class="container">
+        <div class="row">
+            <!-- Column 1: Branding -->
+            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                <h5 class="footer-title">Denuncias Policiales</h5>
+                <p class="mb-4">Plataforma oficial para el registro y seguimiento de denuncias ciudadanas. Comprometidos
+                    con la seguridad y la transparencia.</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- Column 2: Quick Links -->
+            <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                <h5 class="footer-title">Enlaces Rápidos</h5>
+                <ul class="footer-links">
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/denuncias/nueva">Nueva Denuncia</a></li>
+                    <li><a href="/denuncias/seguimiento">Seguimiento</a></li>
+                    <li><a href="/faq">Preguntas Frecuentes</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Contact Info -->
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <h5 class="footer-title">Contacto</h5>
+                <ul class="footer-links">
+                    <li><i class="bi bi-telephone-fill me-2"></i> Emergencias: 105</li>
+                    <li><i class="bi bi-envelope-fill me-2"></i> contacto@policia.gob.pe</li>
+                    <li><i class="bi bi-geo-alt-fill me-2"></i> Av. Principal 123, Lima</li>
+                    <li><i class="bi bi-clock-fill me-2"></i> Atención 24/7</li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Legal -->
+            <div class="col-lg-3 col-md-6">
+                <h5 class="footer-title">Legal</h5>
+                <ul class="footer-links">
+                    <li><a href="/privacidad">Política de Privacidad</a></li>
+                    <li><a href="/terminos">Términos de Uso</a></li>
+                    <li><a href="/transparencia">Portal de Transparencia</a></li>
+                    <li><a href="/libro-reclamaciones">Libro de Reclamaciones</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="footer-bottom text-center">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-md-start">
+                    <p class="mb-0 small">© 2025 Security Roadify Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0 small">Desarrollado por <span class="text-primary fw-bold">Roadify</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
 </footer>
+{{> chat-widget}}

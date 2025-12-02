@@ -15,11 +15,23 @@ services:
 
   notification-service:
     build:
-      context: ./notification_service
+      context: ./services/notification_service
       dockerfile: Dockerfile
     container_name: notification-service
     ports:
       - "8001:8000"
+
+  chat-service:
+    build:
+      context: ./services/chat_service
+      dockerfile: Dockerfile
+    container_name: chat-service
+    ports:
+      - "8002:8002"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/app_dev
 
   frontend:
     build:

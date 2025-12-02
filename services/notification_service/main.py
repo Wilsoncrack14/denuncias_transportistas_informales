@@ -26,7 +26,6 @@ async def send_email(email_data: EmailSchema):
     Sends an email using Brevo SMTP.
     """
     try:
-        # Get credentials from environment variables
         smtp_server = os.getenv("BREVO_SMTP_SERVER")
         smtp_port = int(os.getenv("BREVO_PORT", 587))
         smtp_login = os.getenv("BREVO_LOGIN")
@@ -38,14 +37,12 @@ async def send_email(email_data: EmailSchema):
             logger.info(f"SENDING EMAIL TO: {email_data.email}")
             return {"message": "Email logged (credentials missing)", "recipient": email_data.email}
 
-        # Create email message
         message = EmailMessage()
         message["From"] = sender_email
         message["To"] = email_data.email
         message["Subject"] = email_data.subject
         message.set_content(email_data.message)
 
-        # Send email
         await aiosmtplib.send(
             message,
             hostname=smtp_server,

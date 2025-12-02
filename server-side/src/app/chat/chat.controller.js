@@ -3,6 +3,6 @@ export default class ChatService {
     }
 
     async chat(req, res) {
-        res.render('chat/v-chat', { title: 'Chat' });
+        res.render('chat', { title: 'Chat de Soporte' });
     }
 }

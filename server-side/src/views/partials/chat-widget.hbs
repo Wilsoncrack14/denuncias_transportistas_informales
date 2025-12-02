@@ -1,0 +1,192 @@
+<style>
+    /* Floating Action Button */
+    .chat-fab {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background-color: #0d6efd;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        z-index: 9999;
+        /* High z-index */
+        transition: transform 0.3s ease;
+        /* Ensure no weird transforms */
+        transform: none;
+    }
+
+    .chat-fab:hover {
+        transform: scale(1.1);
+    }
+
+    .chat-fab i {
+        font-size: 28px;
+        /* Reset any inherited text styles */
+        font-style: normal;
+        line-height: 1;
+    }
+
+    /* Chat Window */
+    .chat-widget {
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        width: 350px;
+        height: 500px;
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(20px);
+        pointer-events: none;
+        transition: all 0.3s ease;
+        /* Reset text alignment and direction */
+        text-align: left;
+        direction: ltr;
+    }
+
+    .chat-widget.active {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: all;
+    }
+
+    /* Header */
+    .chat-header {
+        background: linear-gradient(135deg, #0d6efd, #0a58ca);
+        color: white;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .chat-header h5 {
+        margin: 0;
+        font-size: 16px;
+        color: white;
+    }
+
+    .close-chat {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+    }
+
+    /* Body */
+    .chat-body {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        background-color: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message {
+        margin-bottom: 10px;
+        padding: 10px 15px;
+        border-radius: 15px;
+        max-width: 80%;
+        font-size: 14px;
+        word-wrap: break-word;
+    }
+
+    .my-message {
+        background-color: #0d6efd;
+        color: white;
+        align-self: flex-end;
+        /* Flexbox alignment */
+        border-bottom-right-radius: 2px;
+        text-align: right;
+    }
+
+    .other-message {
+        background-color: #e9ecef;
+        color: #333;
+        align-self: flex-start;
+        /* Flexbox alignment */
+        border-bottom-left-radius: 2px;
+        text-align: left;
+    }
+
+    /* Footer */
+    .chat-footer {
+        padding: 15px;
+        border-top: 1px solid #dee2e6;
+        background-color: white;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .chat-footer input {
+        border-radius: 20px;
+        padding-left: 15px;
+        flex: 1;
+    }
+
+    .chat-footer button {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #0d6efd;
+        color: white;
+        border: none;
+    }
+</style>
+
+<!-- Floating Button -->
+<div class="chat-fab" id="chatFab">
+    <i class="bi bi-robot"></i>
+</div>
+
+<!-- Chat Window -->
+<div class="chat-widget" id="chatWidget">
+    <div class="chat-header">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-robot"></i>
+            <div>
+                <h5>Asistente Virtual</h5>
+                <small style="font-size: 11px; opacity: 0.8;">En línea</small>
+            </div>
+        </div>
+        <button class="close-chat" id="closeChatBtn" aria-label="Cerrar chat">
+            <i class="bi bi-x"></i>
+        </button>
+    </div>
+
+    <div class="chat-body" id="chatContainer">
+        <div class="message other-message">
+            <strong>Sistema:</strong> ¡Hola! ¿En qué puedo ayudarte hoy?
+        </div>
+    </div>
+
+    <div class="chat-footer">
+        <input type="text" id="messageInput" class="form-control" placeholder="Escribe un mensaje...">
+        <button id="sendBtn" aria-label="Enviar mensaje">
+            <i class="bi bi-send-fill"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Load Chat Logic -->
+<script src="/js/chat.js"></script>
